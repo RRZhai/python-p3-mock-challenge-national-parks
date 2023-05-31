@@ -1,7 +1,10 @@
 class NationalPark:
     all = []
     def __init__(self, name=''):
-        self.name = name
+        if type(name) == str:
+            self._name = name
+        else:
+            raise Exception
         self._trips = []
         self._visitors = []
         type(self).all.append(self)
@@ -12,10 +15,10 @@ class NationalPark:
     
     @name.setter
     def name(self, name):
-        if type(name) == str:
-            self._name = name
-        else:
-            raise Exception
+        # if type(name) == str and not hasattr(self, '_name'):
+        #     self._name = name
+        # else:
+        raise AttributeError
 
     def trips(self, new_trip=None):
         from classes.trip import Trip
@@ -33,12 +36,12 @@ class NationalPark:
         return len(self.trips())
     
     def best_visitor(self):
-        
-
-        # best = ''
-        # for visitor in self.visitors():
-        #     best_count = self.trips().visitor.count(best)
-        #     current_count = self.trips().visitor.count(visitor)
-        #     if current_count > best_count:
-        #         best = visitor
-        # return best
+        visitors = [trip.visitor for trip in self.trips()]
+        result = ''
+        best = 0
+        for visitor in self.visitors():
+            best_count = visitors.count(visitor)
+            if best_count > best:
+                best = best_count
+                result = visitor
+        return result
