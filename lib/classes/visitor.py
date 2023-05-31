@@ -1,12 +1,28 @@
 class Visitor:
-
-    def __init__(self, name):
+    all = []
+    def __init__(self, name = ''):
         self.name = name
-        
+        type(self).all.append(self)
+
+    @property
+    def name(self):
+        return self._name
+    
+    @name.setter
+    def name(self, name):
+        if type(name) == str:
+            self._name = name
+        else:
+            raise Exception
+
     def trips(self, new_trip=None):
         from classes.trip import Trip
-        pass
+        return [trip for trip in Trip.all if trip.visitor == self]
     
     def national_parks(self, new_national_park=None):
         from classes.national_park import NationalPark
-        pass
+        parks = []
+        for trip in self.trips():
+            if trip.national_park not in parks:
+                parks.append(trip.national_park)
+        return parks
